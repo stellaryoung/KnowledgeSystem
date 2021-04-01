@@ -23,11 +23,6 @@ def request_url(url):
 
 
 if __name__ == "__main__":
-    already = set()
-    with open('../龙头追踪', 'r', encoding='utf-8') as f:
-        for line in f.readlines():
-            data = line.strip().split()
-            already.add(data[0])
 
     url = 'https://xueqiu.com/service/screener/screen?category=CN&exchange=sh_sz&areacode=&indcode=&order_by=symbol&order=desc&page=1&size=30&only_count=0&current=&pct=&mc=&volume=&_=1610280710755'
     data = request_url(url)
@@ -42,13 +37,11 @@ if __name__ == "__main__":
         symbol = data['symbol']
         if 'ST' in name:
             continue
-        # if name in already:
-        #     continue
         res.append(name + '\t' + symbol)
 
     print(len(res))
     res = '\n'.join(res)
-    with open('所有股票代码', 'w', encoding='utf-8') as f:
+    with open('../raw/所有股票代码', 'w', encoding='utf-8') as f:
         f.write(res)
 
 
