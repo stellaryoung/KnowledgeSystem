@@ -15,7 +15,8 @@ def request_url(url):
 def parser_html(html):
     res = []
     soup = BeautifulSoup(html)
-    sub_soups = soup.find('table', id='NewStockTable').find('tbody').find_all('tr')
+    soup = soup.find('table', id='NewStockTable')
+    sub_soups = soup.find_all('tr')[2:]
 
     for sub_soup in sub_soups:
         data = sub_soup.find_all('div')
@@ -48,8 +49,9 @@ if __name__ == "__main__":
     data = parser_html(html)
     res.extend(data)
     
+    res = list(set(res))
     res = '\n'.join(res)
-    with open('../上证50.txt', 'w', encoding='utf-8') as f:
+    with open('../raw/上证50.txt', 'w', encoding='utf-8') as f:
         f.write(res)
 
         

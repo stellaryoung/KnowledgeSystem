@@ -15,7 +15,8 @@ def request_url(url):
 def parser_html(html):
     res = []
     soup = BeautifulSoup(html)
-    sub_soups = soup.find('table', id='NewStockTable').find('tbody').find_all('tr')
+    soup = soup.find('table', id='NewStockTable')
+    sub_soups = soup.find_all('tr')[2:]
 
     for sub_soup in sub_soups:
         data = sub_soup.find_all('div')
@@ -43,14 +44,17 @@ def parser_html(html):
 if __name__ == "__main__":
     res = []
     for i in range(1, 9):
+        # http://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page=2&indexid=000300
         url = 'http://vip.stock.finance.sina.com.cn/corp/view/vII_NewestComponent.php?page={}&indexid=000300'.format(str(i))
     
         html = request_url(url)
         data = parser_html(html)
         res.extend(data)
-    
+    print(len(res))
+    res = list(set(res))
+    print(len(res))
     res = '\n'.join(res)
-    with open('../沪深300.txt', 'w', encoding='utf-8') as f:
+    with open('../raw/沪深300.txt', 'w', encoding='utf-8') as f:
         f.write(res)
 
         
